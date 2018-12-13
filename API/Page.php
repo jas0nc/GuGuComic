@@ -49,7 +49,7 @@ if (isset($chap)){
 	$jpg = explode('" border="',$jpg);
 	$jpg = $jpg[0];
 	$jpg = explode('/',$jpg);
-	$jpglink = 'http://'.$jpg[2].'/'.$jpg[3].'/'.$jpg[4].'/'.$jpg[5].'/';
+	$jpglink = 'http://www.cartoonmad.com/cartoonimg/'.$jpg[2].'/'.$jpg[3].'/'.$jpg[4].'/';
 	$ComicSN = $jpg[4];
 	//Get Total Page Number
 	//$pages = explode('下一頁',$html);
