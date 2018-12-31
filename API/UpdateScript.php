@@ -43,10 +43,10 @@ function updatescript($comicname, $comicSN, $ComicLinkArr,$LastChatperArr){
 	else{
 		//$ComicLinkArr
 		$ComicLinkArr = array_merge($ComicLinkArr, array($comicname => $ComicSN));
-		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr));
+		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr),LOCK_EX);
 		//$LastChatperArr
 		$LastChatperArr = array_merge($LastChatperArr, array($comicname => $lastchap));
-		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr));
+		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr),LOCK_EX);
 		//$result
 		$debug .= $comicname.'['.$comicSN.'] - 已新增 - '.$lastchap.'<br>';
 	}
