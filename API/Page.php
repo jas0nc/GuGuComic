@@ -49,8 +49,8 @@ if (isset($chap)){
 	$jpg = explode('" border="',$jpg);
 	$jpg = $jpg[0];
 	$jpg = explode('/',$jpg);
-	$jpglink = 'http://www.cartoonmad.com/cartoonimg/'.$jpg[2].'/'.$jpg[3].'/'.$jpg[4].'/';
-	$ComicSN = $jpg[4];
+	$jpglink = 'http://web3.cartoonmad.com/c529e4khw31/'.$comicSN.'/'.$jpg[2].'/';
+	//$ComicSN = $jpg[4];
 	//Get Total Page Number
 	//$pages = explode('下一頁',$html);
 	$pages = explode('下一話',$html);//echo $html;
