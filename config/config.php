@@ -5,4 +5,6 @@ $mainuserbackupfile = "GuGuBackup";
 $newupdatecolor = "#ff80aa";
 $nonewupdatecolor = "#959ca5";
 $notstartedcolor = "#b3ffd9";
+//secretkey
+$secretkey = 'c5hw316v4k7';
 ?>
