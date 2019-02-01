@@ -23,21 +23,22 @@ function updatescript($comicname, $comicSN, $ComicLinkArr,$LastChatperArr){
 			$debug .= $comicname.'['.$comicSN.'] - NULL<br>';
 		}
 		else {
+			//$prefetchcomic = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'?Comic='.$comicname); //try do prefetch
 			//$ComicLinkArr
 			$resortarray = $ComicLinkArr[$comicname];
 			unset($ComicLinkArr[$comicname]);
 			$ComicLinkArr[$comicname] = $resortarray;
-			file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr));
+			file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr),LOCK_EX);
 			//$LastChatperArr
 			unset($LastChatperArr[$comicname]);
 			$LastChatperArr = array_merge($LastChatperArr, array($comicname => $lastchap));
-			file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr));
+			file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr),LOCK_EX);
 			//$result
 			$result .= $comicname.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d").']<br>';
 			//$result .= print_r($LastChatperArr).'<br>';
 			$oldlog = file_get_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt');		
 			$newlog = $result;
-			file_put_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt',$newlog.$oldlog);
+			file_put_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt',$newlog.$oldlog,LOCK_EX);
 		}
 	}
 	else{

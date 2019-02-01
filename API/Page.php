@@ -49,7 +49,7 @@ if (isset($chap)){
 	$jpg = explode('" border="',$jpg);
 	$jpg = $jpg[0];
 	$jpg = explode('/',$jpg);
-	$jpglink = 'http://web3.cartoonmad.com/c529e4khw31/'.$comicSN.'/'.$jpg[2].'/';
+	$jpglink = 'http://web3.cartoonmad.com/'.$secretkey.'/'.$comicSN.'/'.$jpg[2].'/';
 	//$ComicSN = $jpg[4];
 	//Get Total Page Number
 	//$pages = explode('下一頁',$html);
@@ -87,8 +87,10 @@ if (isset($chap)){
 			$structure = __DIR__.'/../temp/';
 			$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
 			if (is_file($filename)){}
-			else {file_put_contents($filename, fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'));}
-			echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+			else {
+			    file_put_contents($filename, fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'));
+				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+				}
 		}
 		else {
 			echo '<img id="the_pic" class="center fit" src="'.$jpglink.sprintf('%03d', $i).'.jpg"><br>';

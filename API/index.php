@@ -28,7 +28,7 @@ else {
 
 <html>
 <head>
-<title>GuGuComic<?if(isset($_GET['Comic'])){echo ' - '.$comic;}if(isset($_GET['Chapter'])){echo ' - '.$Chap;}?></title>
+<title>動漫J神<?if(isset($_GET['Comic'])){echo ' - '.$comic;}if(isset($_GET['Chapter'])){echo ' - '.$Chap;}?></title>
 <style>
 * {
   padding: 0;
@@ -101,6 +101,13 @@ addToHomescreen();
 <div align="center">
 <h1>動漫J神</h1>
 <p><i>A mirror site for Cartoonmad.com</i></p>
+<p><b><?
+//test if secretkey is usable
+$start_memory = memory_get_usage();
+$downloadpage = fopen('http://web3.cartoonmad.com/'.$secretkey.'/1698/001/001.jpg', 'r'); 
+$downloadpagesize = memory_get_usage() - $start_memory;
+if ($downloadpagesize == 0){echo 'secretkey: {'.$secretkey.'} is not correct.<br>Please update the secretkey.';exit;}
+?></b></p>
 <a id="ComicManager-top" type="hidden" href="?ComicManager"><button>漫畫管理</button></a> 
 <a href="javascript:window.location.reload();"><button>刷新頁面</button></a>
 <a href="index.php"><button>返回首頁</button></a>
