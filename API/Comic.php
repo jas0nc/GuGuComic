@@ -46,7 +46,7 @@ foreach(array_reverse(array_keys($keys)) as $k){
 	echo '</p></td>';
 	echo '
 		<script>
-		setTimeout(function() {
+		setTimeout(function(t) {
 			if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k]].'"){
 					x = 0;
 					col=document.getElementById("h'.$k.'");
@@ -55,10 +55,6 @@ foreach(array_reverse(array_keys($keys)) as $k){
 			if (x == 1){
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
-					if (this.readyState == 3) {	
-						col=document.getElementById("h'.$k.'");
-						col.style.color="#FFA500";
-					}
 					if (this.readyState == 4 && this.status == 200) {	
 						col=document.getElementById("h'.$k.'");
 						col.style.color="#009933";
@@ -66,8 +62,10 @@ foreach(array_reverse(array_keys($keys)) as $k){
 				};
 				xhttp.open("GET", "?Comic='.$comic.'&Chapter='.$keys[$k].'&hotlink='.$hotlink.'", true);
 				xhttp.send();
+				col=document.getElementById("h'.$k.'");
+				col.style.color="#FFA500";
 			}
-		}, 1000);
+		}, t*500);
 		t++;
 		</script>
 		';
