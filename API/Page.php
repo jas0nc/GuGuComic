@@ -86,7 +86,9 @@ if (isset($chap)){
 		if ($hotlink == "False"){
 			$structure = __DIR__.'/../temp/';
 			$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
-			if (is_file($filename)){}
+			if (is_file($filename)){
+				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+				}
 			else {
 			    file_put_contents($filename, fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'));
 				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
