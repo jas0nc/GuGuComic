@@ -199,7 +199,7 @@ else{
 }
 ?>
 </div>
-<p align="center">This website is for my personal PHP study only. &copy;Jason Chan</p>
+<p align="center">This website is for my personal PHP study only. &copy;Jason Chan.<br>Source code is available on <a href="https://github.com/jas0nc/GuGuComic">Github</a></p>
 </footer>
 	</body>
 	</html>	
