@@ -37,12 +37,40 @@ foreach ($chapterlist as $chapter){
 	$newcahpters = 'http://www.cartoonmad.com'.$schapterlink;
 	$chaps[] = 'http://www.cartoonmad.com'.$schapterlink;
 }
+echo '<script>var x = 1; t = 1;</script>';
 $keys = array_keys($chaps);
 foreach(array_reverse(array_keys($keys)) as $k){
 	$i ++;
 	echo '<td width="20%">';
 	echo '&nbsp;<a id="h'.$k.'" href="?Comic='.$comic.'&Chapter='.$keys[$k].'">'.$newcahptersname[$keys[$k]].'</a>&nbsp;<br>';
 	echo '</p></td>';
+	echo '
+		<script>
+		setTimeout(function() {
+			if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k]].'"){
+					x = 0;
+					col=document.getElementById("h'.$k.'");
+					col.style.color="#FF0000";
+				}
+			if (x == 1){
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 3) {	
+						col=document.getElementById("h'.$k.'");
+						col.style.color="#FFA500";
+					}
+					if (this.readyState == 4 && this.status == 200) {	
+						col=document.getElementById("h'.$k.'");
+						col.style.color="#009933";
+					}
+				};
+				xhttp.open("GET", "?Comic='.$comic.'&Chapter='.$keys[$k].'&hotlink='.$hotlink.'", true);
+				xhttp.send();
+			}
+		}, 1000);
+		t++;
+		</script>
+		';
 	/*echo '
 		<script>
 		if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k-1]].'"){
@@ -74,26 +102,6 @@ foreach(array_reverse(array_keys($keys)) as $k){
 		}
 		</script>
 		';*/
-	echo '
-		<script>
-		if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k]].'"){
-				x = 0;
-				col=document.getElementById("h'.$k.'");
-				col.style.color="#FF0000";
-			}
-		if (x == 1){
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {	
-					col=document.getElementById("h'.$k.'");
-					col.style.color="#009933";
-				}
-			};
-			xhttp.open("GET", "?Comic='.$comic.'&Chapter='.$keys[$k].'&hotlink='.$hotlink.'", true);
-			xhttp.send();
-		}
-		</script>
-		';
 	switch($i){
 	case 5:
 		echo '</tr><tr>';
