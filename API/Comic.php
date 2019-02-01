@@ -43,7 +43,7 @@ foreach(array_reverse(array_keys($keys)) as $k){
 	echo '<td width="20%">';
 	echo '&nbsp;<a id="h'.$k.'" href="?Comic='.$comic.'&Chapter='.$keys[$k].'">'.$newcahptersname[$keys[$k]].'</a>&nbsp;<br>';
 	echo '</p></td>';
-	echo '
+	/*echo '
 		<script>
 		if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k-1]].'"){
 			var xhttp = new XMLHttpRequest();
@@ -70,6 +70,26 @@ foreach(array_reverse(array_keys($keys)) as $k){
 				}
 			};
 			xhttp.open("GET", "?Comic='.$comic.'&Chapter='.$keys[0].'&hotlink='.$hotlink.'", true);
+			xhttp.send();
+		}
+		</script>
+		';*/
+	echo '
+		<script>
+		if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k]].'"){
+				x = 0;
+				col=document.getElementById("h'.$k.'");
+				col.style.color="#FF0000";
+			}
+		if (x == 1){
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {	
+					col=document.getElementById("h'.$k.'");
+					col.style.color="#009933";
+				}
+			};
+			xhttp.open("GET", "?Comic='.$comic.'&Chapter='.$keys[$k].'&hotlink='.$hotlink.'", true);
 			xhttp.send();
 		}
 		</script>
