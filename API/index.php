@@ -104,7 +104,7 @@ addToHomescreen();
 <p><b><?
 //test if secretkey is usable
 $start_memory = memory_get_usage();
-$downloadpage = fopen('http://web3.cartoonmad.com/'.$secretkey.'/1698/001/001.jpg', 'r'); 
+$downloadpage = fopen('http://web4.cartoonmad.com/'.$secretkey.'/1698/001/001.jpg', 'r'); 
 $downloadpagesize = memory_get_usage() - $start_memory;
 if ($downloadpagesize == 0){echo 'secretkey: {'.$secretkey.'} is not correct.<br>Please update the secretkey.';exit;}
 ?></b></p>
