@@ -49,7 +49,7 @@ if (isset($chap)){
 	$jpg = explode('" border="',$jpg);
 	$jpg = $jpg[0];
 	$jpg = explode('/',$jpg);
-	$jpglink = 'http://web3.cartoonmad.com/'.$secretkey.'/'.$comicSN.'/'.$jpg[2].'/';
+	$jpglink = 'http://web4.cartoonmad.com/'.$secretkey.'/'.$comicSN.'/'.$jpg[2].'/';
 	//$ComicSN = $jpg[4];
 	//Get Total Page Number
 	//$pages = explode('下一頁',$html);
@@ -86,12 +86,21 @@ if (isset($chap)){
 		if ($hotlink == "False"){
 			$structure = __DIR__.'/../temp/';
 			$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
-			if (is_file($filename)){
+			if (is_file($filename) && filesize($filename)!=0){
 				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
 				}
 			else {
-			    file_put_contents($filename, fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'));
-				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+				//test if secretkey is usable
+				$start_memory_img = memory_get_usage();
+				$downloadpage_img = fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'); 
+				$downloadpagesize_img = memory_get_usage() - $start_memory_img;
+				//if ($downloadpagesize_img < 1000){
+				//	echo 'some error occur when donwloading '.$jpglink.sprintf('%03d', $i).'.jpg'.', file size is '.$downloadpagesize_img.'<br>';
+				//	}
+				//else{
+				    file_put_contents($filename, $downloadpage_img);
+					echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+				//	}
 				}
 		}
 		else {
