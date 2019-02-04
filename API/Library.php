@@ -22,7 +22,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			';
 		echo '<a href="?Comic='.$comic.'">
 			';
-		echo '<img src="https://www.cartoonmad.com/home1/cnimg/'.$comicSN.'.jpg'.'" width="95%" alt="'.$comic.'" /><br>
+		echo '<img src="http://web4.cartoonmad.com/coimg/'.$comicSN.'.jpg'.'" width="95%" alt="'.$comic.'" /><br>
 			';
 		echo '<p style="font-size:15px">'.$comic.'</p></a>
 			<p style="font-size:11px" id="'.$comic.'">(Checking Updates)<br></p>

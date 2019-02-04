@@ -6,7 +6,7 @@ function updatescript($comicname, $comicSN, $ComicLinkArr,$LastChatperArr){
 	$html = mb_convert_encoding($html,'utf-8','Big5');
 	//Parsing SourceCode and get last chapter
 	$chapterlist = end(explode('cellpadding="0" cellspacing="0" border="0">',$html));
-	$chapterlist = array_values(explode('<td background="/image/content_box5.gif" width="10">',$chapterlist))[0];
+	$chapterlist = array_values(explode('/image/content_box5.gif" width="10">',$chapterlist))[0];
 	$chapter = end(preg_split("/<a href=/", $chapterlist));
 	$schapter = array_values(explode('</a>',$chapter))[0];
 	$schapterlink = array_values(explode(' target=_blank>',$schapter))[0];

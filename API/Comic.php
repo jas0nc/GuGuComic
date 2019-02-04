@@ -22,7 +22,7 @@ echo '<br><table style="background-color:white"><tr>
 //Parsing SourceCode
 //$chapterlist = array_values(explode('cellpadding="0" cellspacing="0" border="0">',$html))[3];
 $chapterlist = end(explode('cellpadding="0" cellspacing="0" border="0">',$html));
-$chapterlist = array_values(explode('<td background="/image/content_box5.gif" width="10">',$chapterlist))[0];
+$chapterlist = array_values(explode('/image/content_box5.gif" width="10">',$chapterlist))[0];
 $chapterlist = preg_split("/<a href=/", $chapterlist);
 unset($chapterlist[0]);
 foreach ($chapterlist as $chapter){
