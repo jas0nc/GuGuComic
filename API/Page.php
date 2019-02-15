@@ -49,7 +49,7 @@ if (isset($chap)){
 	$jpg = explode('" border="',$jpg);
 	$jpg = $jpg[0];
 	$jpg = explode('/',$jpg);
-	$jpglink = 'http://web4.cartoonmad.com/'.$secretkey.'/'.$comicSN.'/'.$jpg[2].'/';
+	$jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg[2].'/';
 	//$ComicSN = $jpg[4];
 	//Get Total Page Number
 	//$pages = explode('下一頁',$html);
@@ -81,13 +81,32 @@ if (isset($chap)){
 	//chapter navigator end	
 	//echo $jpglink.sprintf('%03d', 1);exit;
 	//Download and show images
+	
+	//create CBZ
+	/*
 	$structure = __DIR__.'/../temp/';
+	if (!file_exists(__DIR__.'/../CBZ/'.$comic)) {
+	    mkdir(__DIR__.'/../CBZ/'.$comic, 0777, true);
+	}
+	$zip = new ZipArchive;
+	$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap]].'.cbz';
+	if (!file_exists($CBZpath)) {
+		$zip->open($CBZpath, ZipArchive::CREATE);
+	} else {
+		$zip->open($CBZpath, ZipArchive::OVERWRITE);		
+	}
+	*/
 	for ($i = 1; $i <= $pages; $i++) {
 		if ($hotlink == "False"){
-			$structure = __DIR__.'/../temp/';
+			$structure = __DIR__.'/../temp/'.$comic.'/';
+			if (!file_exists($structure)) {
+			    mkdir($structure, 0777, true);
+			}
 			$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
-			if (is_file($filename) && filesize($filename)!=0){
-				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+			if (is_file($filename) && filesize($filename) > 20000){
+				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+				//create CBZ
+				//$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
 				}
 			else {
 				//test if secretkey is usable
@@ -99,16 +118,19 @@ if (isset($chap)){
 				//	}
 				//else{
 				    file_put_contents($filename, $downloadpage_img);
-					echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+					echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
 				//	}
-				}
+				//create CBZ
+				//$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
+			}
 		}
 		else {
 			echo '<img id="the_pic" class="center fit" src="'.$jpglink.sprintf('%03d', $i).'.jpg"><br>';
 		}
 		//$result .=  sprintf('%03d', $i).'.jpg ';
-
 	}
+	//create CBZ
+	//$zip->close();
 	//chapter navigator Start
 	echo '<table width="100%"><tr>';
 	echo '<td align="left">';

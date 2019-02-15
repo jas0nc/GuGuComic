@@ -103,10 +103,14 @@ addToHomescreen();
 <p><i>A mirror site for Cartoonmad.com</i></p>
 <p><b><?
 //test if secretkey is usable
-$start_memory = memory_get_usage();
-$downloadpage = fopen('http://web4.cartoonmad.com/'.$secretkey.'/1698/001/001.jpg', 'r'); 
-$downloadpagesize = memory_get_usage() - $start_memory;
-if ($downloadpagesize == 0){echo 'secretkey: {'.$secretkey.'} is not correct.<br>Please update the secretkey.';exit;}
+$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r'); 
+file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
+if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){
+	echo 'jpglinktoday: {'.$jpglinktoday.'} is not correct.<br>Please update it in config.php.';
+	echo 'downloaded testpage size '.round(filesize(__DIR__.'/../temp/testingpage.jpg')/1024,0).'KB is less than 20KB<br>';
+	echo 'non-cached comic may not be shown properly.';
+	//exit;
+}
 ?></b></p>
 <a id="ComicManager-top" type="hidden" href="?ComicManager"><button>漫畫管理</button></a> 
 <a href="javascript:window.location.reload();"><button>刷新頁面</button></a>
