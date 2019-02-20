@@ -100,15 +100,16 @@ if (isset($chap)){
 		$za->open($CBZpath); 
 		
 		for( $i = 0; $i < $za->numFiles; $i++ ){ 
+			
 		    $im_string = $za->getFromIndex( $i ); 
 		    $im = imagecreatefromstring($im_string);
-		    imagejpeg($im, $i.'simpletext.jpg');
+		    
 			ob_start(); 
-		  imagejpeg($im, NULL, 100 ); 
-		  imagedestroy( $im ); 
-		  $img = ob_get_clean(); 
+			imagejpeg($im, NULL, 100 ); 
+			imagedestroy( $im ); 
+			$img = ob_get_clean(); 
 		
-		echo '<img id="the_pic" class="center fit" src="data:image/jpeg;base64,' . base64_encode( $img ).'"><br>'; //saviour line!
+			echo '<img id="the_pic" class="center fit" src="data:image/jpeg;base64,' . base64_encode( $img ).'"><br>'; //saviour line!
 		}
 	}
 	else {
