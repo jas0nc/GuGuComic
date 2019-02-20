@@ -53,7 +53,8 @@ if (isset($chap)){
 	//$ComicSN = $jpg[4];
 	//Get Total Page Number
 	//$pages = explode('下一頁',$html);
-	$pages = explode('下一話',$html);//echo $html;
+	$pages = str_replace('下一卷','下一話',$html);
+	$pages = explode('下一話',$pages);//echo $html;
 	$pages = $pages[0];
 	$pages = explode('第',$pages);
 	$pages = explode(' 頁',end($pages));
@@ -71,74 +72,123 @@ if (isset($chap)){
 	echo ' / <a href="?Comic='.$comic.'">'.'<button>返回: '.$comic.'</button></a><br>';
 	echo '<table width="100%"><tr>';
 	echo '<td align="left">';
-	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1].'">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
+	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1];
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap-1]];}
+	echo '">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
 	echo '</td><td align="center">';
 	echo $newcahptersname[$keys[$chap]];
 	echo '</td><td align="right">';
-	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload1" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1].'">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
+	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload1" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1];
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap+1]];}
+	echo '">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
 	echo '</td>';
 	echo '</tr></table>';
 	//chapter navigator end	
 	//echo $jpglink.sprintf('%03d', 1);exit;
 	//Download and show images
-	
-	//create CBZ
-	/*
 	$structure = __DIR__.'/../temp/';
-	if (!file_exists(__DIR__.'/../CBZ/'.$comic)) {
-	    mkdir(__DIR__.'/../CBZ/'.$comic, 0777, true);
+	$pageiscomplete = true;
+	$pagemissing = "";
+	if(isset($Chaptername))
+	{
+		$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.urldecode($Chaptername).'.cbz';
+		echo 'cache from CBZ: '.$CBZpath;
+		$za = new ZipArchive(); 
+		
+		$za->open($CBZpath); 
+		
+		for( $i = 0; $i < $za->numFiles; $i++ ){ 
+		    $im_string = $za->getFromIndex( $i ); 
+		    $im = imagecreatefromstring($im_string);
+		    imagejpeg($im, $i.'simpletext.jpg');
+			ob_start(); 
+		  imagejpeg($im, NULL, 100 ); 
+		  imagedestroy( $im ); 
+		  $img = ob_get_clean(); 
+		
+		echo '<img id="the_pic" class="center fit" src="data:image/jpeg;base64,' . base64_encode( $img ).'"><br>'; //saviour line!
+		}
 	}
-	$zip = new ZipArchive;
-	$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap]].'.cbz';
-	if (!file_exists($CBZpath)) {
-		$zip->open($CBZpath, ZipArchive::CREATE);
-	} else {
-		$zip->open($CBZpath, ZipArchive::OVERWRITE);		
-	}
-	*/
-	for ($i = 1; $i <= $pages; $i++) {
-		if ($hotlink == "False"){
-			$structure = __DIR__.'/../temp/'.$comic.'/';
-			if (!file_exists($structure)) {
-			    mkdir($structure, 0777, true);
-			}
-			$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
-			if (is_file($filename) && filesize($filename) > 20000){
-				echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
-				//create CBZ
-				//$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
+	else {
+		for ($i = 1; $i <= $pages; $i++) {
+			if ($hotlink == "False"){
+				$structure = __DIR__.'/../temp/'.$comic.'/';
+				if (!file_exists($structure)) {
+				    mkdir($structure, 0777, true);
 				}
-			else {
-				//test if secretkey is usable
-				$start_memory_img = memory_get_usage();
-				$downloadpage_img = fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'); 
-				$downloadpagesize_img = memory_get_usage() - $start_memory_img;
-				//if ($downloadpagesize_img < 1000){
-				//	echo 'some error occur when donwloading '.$jpglink.sprintf('%03d', $i).'.jpg'.', file size is '.$downloadpagesize_img.'<br>';
-				//	}
-				//else{
-				    file_put_contents($filename, $downloadpage_img);
+				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+				if (is_file($filename) && filesize($filename) > 20000){
 					echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
-				//	}
-				//create CBZ
-				//$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
+					}
+				else {
+					//test if secretkey is usable
+					$start_memory_img = memory_get_usage();
+					$downloadpage_img = fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'); 
+					$downloadpagesize_img = memory_get_usage() - $start_memory_img;
+				    file_put_contents($filename, $downloadpage_img);
+					if (is_file($filename) && filesize($filename) > 20000)
+					{
+						echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+					}
+					else {
+						echo 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
+						$pageiscomplete = false;
+						$pagemissing .= 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
+					}
+				}		
 			}
+			else {
+				echo '<img id="the_pic" class="center fit" src="'.$jpglink.sprintf('%03d', $i).'.jpg"><br>';
+			}
+			//$result .=  sprintf('%03d', $i).'.jpg ';
 		}
-		else {
-			echo '<img id="the_pic" class="center fit" src="'.$jpglink.sprintf('%03d', $i).'.jpg"><br>';
-		}
-		//$result .=  sprintf('%03d', $i).'.jpg ';
+			
+		//create CBZ
+		if($pageiscomplete){
+			echo "This chapter is complete, generating a CBZ file for backup.<br>";
+			if (!file_exists(__DIR__.'/../CBZ/'.$comic)) {
+			    mkdir(__DIR__.'/../CBZ/'.$comic, 0777, true);
+			}
+			$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap]].'.cbz';
+			if (!file_exists($CBZpath)) {
+				$zip = new ZipArchive;
+				$zip->open($CBZpath, ZipArchive::CREATE);
+				for ($i = 1; $i <= $pages; $i++) {
+					$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+					$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
+				}
+			$zip->close();
+			echo "CBZ file has been saved.";
+			for ($i = 1; $i <= $pages; $i++) {
+				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+				if (file_exists($filename)){
+						unlink($filename);
+					}
+			}
+		} else {
+			//$zip->open($CBZpath, ZipArchive::OVERWRITE);
+			echo "CBZ file already exist";	
+			for ($i = 1; $i <= $pages; $i++) {
+				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+				if (file_exists($filename)){
+						unlink($filename);
+					}
+				}
+			}
+		} else { echo 'some page is still not downloaded.<br>'.$pagemissing;}
 	}
-	//create CBZ
-	//$zip->close();
 	//chapter navigator Start
 	echo '<table width="100%"><tr>';
 	echo '<td align="left">';
-	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1].'">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
+	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1];
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap-1]];}
+	echo '">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
 	echo '</td><td align="center">';
 	echo $newcahptersname[$keys[$chap]];
 	echo '</td><td align="right">';
-	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload2" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1].'">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
+	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload2" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1];
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap+1]];}
+	echo '">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
 	echo '</td>';
 	echo '</tr></table>';
 	echo '<a href="?Comic='.$comic.'">'.'<button>返回: '.$comic.'</button></a> / ';

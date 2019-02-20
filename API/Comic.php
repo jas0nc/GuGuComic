@@ -39,10 +39,16 @@ foreach ($chapterlist as $chapter){
 }
 echo '<script>var x = 1; t = 1;</script>';
 $keys = array_keys($chaps);
+$nomissingchapter = true;
 foreach(array_reverse(array_keys($keys)) as $k){
 	$i ++;
+	$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz';
 	echo '<td width="20%">';
-	echo '&nbsp;<a id="h'.$k.'" href="?Comic='.$comic.'&Chapter='.$keys[$k].'">'.$newcahptersname[$keys[$k]].'</a>&nbsp;<br>';
+	echo '&nbsp;<a id="h'.$k.'" href="?Comic='.$comic.'&Chapter='.$keys[$k];
+	if (file_exists($CBZpath)){ echo '&Chaptername='.$newcahptersname[$keys[$k]];}
+	echo '">'.$newcahptersname[$keys[$k]].'</a>';
+	if (file_exists($CBZpath)){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
+	echo '&nbsp;<br>';
 	echo '</p></td>';
 	echo '
 		<script>
@@ -51,7 +57,8 @@ foreach(array_reverse(array_keys($keys)) as $k){
 					x = 0;
 					col=document.getElementById("h'.$k.'");
 					col.style.color="#FF0000";
-				}
+				}';
+	if (!file_exists($CBZpath)){ echo '
 			if (x == 1){
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
@@ -64,9 +71,13 @@ foreach(array_reverse(array_keys($keys)) as $k){
 				xhttp.send();
 				col=document.getElementById("h'.$k.'");
 				col.style.color="#FFA500";
-			}
-		}, t*500);
-		t++;
+			}';
+			$nomissingchapter = false;}
+	echo '
+		}, t*500);';
+	if (!file_exists($CBZpath)){ echo '
+		t++;';}
+	echo '
 		</script>
 		';
 	/*echo '
@@ -107,6 +118,7 @@ foreach(array_reverse(array_keys($keys)) as $k){
 		break;
 	}
 }
+if($nomissingchapter && is_dir(__DIR__.'/../temp/'.$comic)){rmdir(__DIR__.'/../temp/'.$comic);}
 		//-----------------------------//
 echo '</tr></table><br>';
 ?>

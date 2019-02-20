@@ -12,6 +12,7 @@ include('config/config.php');
 //Load URL Direction
 $comic = $_GET['Comic'];
 $chap = $_GET['Chapter'];
+$Chaptername = $_GET['Chaptername'];
 if (isset($_GET['hotlink'])){
 $changehotlink = $_GET['hotlink'];
 	if ($changehotlink == "False"){$_SESSION['hotlink'] = "False";}
