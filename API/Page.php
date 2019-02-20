@@ -75,12 +75,14 @@ if (isset($chap)){
 	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1];
 	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap-1]];}
 	echo '">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '</td><td align="center">';
 	echo $newcahptersname[$keys[$chap]];
 	echo '</td><td align="right">';
 	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload1" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1];
 	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap+1]];}
 	echo '">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '</td>';
 	echo '</tr></table>';
 	//chapter navigator end	
@@ -92,7 +94,7 @@ if (isset($chap)){
 	if(isset($Chaptername))
 	{
 		$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.urldecode($Chaptername).'.cbz';
-		echo 'cache from CBZ: '.$CBZpath;
+		echo 'Cache from CBZ: '.end(explode('/',$CBZpath)).'<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">';
 		$za = new ZipArchive(); 
 		
 		$za->open($CBZpath); 
@@ -175,7 +177,9 @@ if (isset($chap)){
 					}
 				}
 			}
-		} else { echo 'some page is still not downloaded.<br>'.$pagemissing;}
+		} else { echo 'some page is still not downloaded.<br>
+		Please download it manually from :'.$url.'<br>
+		The page mssing are:<br>'.$pagemissing;}
 	}
 	//chapter navigator Start
 	echo '<table width="100%"><tr>';
@@ -183,18 +187,21 @@ if (isset($chap)){
 	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1];
 	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap-1]];}
 	echo '">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '</td><td align="center">';
 	echo $newcahptersname[$keys[$chap]];
 	echo '</td><td align="right">';
 	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload2" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1];
 	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap+1]];}
 	echo '">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '</td>';
 	echo '</tr></table>';
 	echo '<a href="?Comic='.$comic.'">'.'<button>返回: '.$comic.'</button></a> / ';
 	//chapter navigator end
 }
-?>
+if (!file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ 
+echo '
 <script>
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
@@ -205,6 +212,9 @@ xhttp.onreadystatechange = function() {
 	col2.style.color="#009933";
   }
 };
-xhttp.open("GET", "<?echo'?Comic='.$comic.'&Chapter='.$keys[$chap+1].'&hotlink='.$hotlink;?>", true);
+xhttp.open("GET", "?Comic='.$comic.'&Chapter='.$keys[$chap+1].'&hotlink='.$hotlink.'", true);
 xhttp.send();
 </script>
+';
+}
+?>
