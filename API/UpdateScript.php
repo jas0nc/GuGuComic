@@ -43,7 +43,7 @@ function updatescript($comicname, $comicSN, $ComicLinkArr,$LastChatperArr){
 	}
 	else{
 		//$ComicLinkArr
-		$ComicLinkArr = array_merge($ComicLinkArr, array($comicname => $ComicSN));
+		$ComicLinkArr = array_merge($ComicLinkArr, array($comicname => $comicSN));
 		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr),LOCK_EX);
 		//$LastChatperArr
 		$LastChatperArr = array_merge($LastChatperArr, array($comicname => $lastchap));
