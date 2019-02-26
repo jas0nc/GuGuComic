@@ -1,6 +1,6 @@
 <?
 file_put_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt', "");
-rrmdir(__DIR__.'/../temp') ;
+//rrmdir(__DIR__.'/../temp') ;
 header('Location: ' . $_SERVER['HTTP_REFERER']);
 function rrmdir($dir) { 
 	$objects = scandir($dir); 

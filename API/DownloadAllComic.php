@@ -98,6 +98,37 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		$newcahptersname[] = $schaptername;
 		$newcahpters = 'http://www.cartoonmad.com'.$schapterlink;
 		$chaps[] = 'http://www.cartoonmad.com'.$schapterlink;
+		$lastchap = $schaptername;
+	}
+	
+	if (array_key_exists($comic, $ComicLinkArr)){
+		if ($lastchap === $LastChatperArr[$comic]){
+		//$result
+			$debug .= $comic.'['.$comicSN.'] - 沒有更新<br>';
+			//echo $comicname.'['.$comicSN.'] - 沒有更新<br>';exit;
+		}
+		else if($lastchap === null){
+		//$result
+			$debug .= $comic.'['.$comicSN.'] - NULL<br>';
+		}
+		else {
+			//$prefetchcomic = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'?Comic='.$comicname); //try do prefetch
+			//$ComicLinkArr
+			$resortarray = $ComicLinkArr[$comic];
+			unset($ComicLinkArr[$comic]);
+			$ComicLinkArr[$comic] = $resortarray;
+			file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr),LOCK_EX);
+			//$LastChatperArr
+			unset($LastChatperArr[$comic]);
+			$LastChatperArr = array_merge($LastChatperArr, array($comic => $lastchap));
+			file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr),LOCK_EX);
+			//$result
+			$result .= $comic.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d").']<br>';
+			//$result .= print_r($LastChatperArr).'<br>';
+			$oldlog = file_get_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt');		
+			$newlog = $result;
+			file_put_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt',$newlog.$oldlog,LOCK_EX);
+		}
 	}
 	//print_r($newcahptersname); print_r($chaps); continue;
 	$keys = array_keys($chaps);
