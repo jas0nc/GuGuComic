@@ -103,8 +103,9 @@ addToHomescreen();
 <h1>動漫J神</h1>
 <p><i>A mirror site for Cartoonmad.com</i></p>
 <p><b><?
-//test if secretkey is usable
-$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r'); 
+$jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
+$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r');
+//--------------------------------------------//
 file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
 if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){
 	echo 'jpglinktoday: {'.$jpglinktoday.'} is not correct.<br>Please update it in config.php.';
