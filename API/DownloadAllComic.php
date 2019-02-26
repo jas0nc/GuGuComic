@@ -1,7 +1,7 @@
 <?php
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
 $downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r'); 
-$downloadallcomictest = __DIR__.'/../temp/testpages/downloadallcomictest.jpg';
+$downloadallcomictest = __DIR__.'/../temp/downloadallcomictest.jpg';
 file_put_contents($downloadallcomictest, $downloadpage);
 if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(__DIR__.'/../temp/404.jpg')){
 	echo 'jpglinktoday: {'.$jpglinktoday.'} is not correct.<br>Please update it in config.php.';
@@ -13,7 +13,7 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 	function testsecretkey($key) 
 	 {
 	 	$downloadpage_img = fopen('http://web4.cartoonmad.com/home'.sprintf('%05d', $key).'/1698/298/002.jpg', 'r');
-	 	$filename = __DIR__.'/../temp/testpages/testingpage'.sprintf('%05d', $key).'.jpg';
+	 	$filename = __DIR__.'/../temp/testingpage'.sprintf('%05d', $key).'.jpg';
 	 	file_put_contents($filename, $downloadpage_img);
 		//if (!is_file($filename) || filesize($filename) < 20000)
 	  if (!is_file($filename) || filesize($filename) < 20000 || file_get_contents($filename) == file_get_contents(__DIR__.'/../temp/404.jpg'))

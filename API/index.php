@@ -113,6 +113,7 @@ if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){
 	echo 'non-cached comic may not be shown properly.';
 	//exit;
 }
+unlink(__DIR__.'/../temp/testingpage.jpg');
 ?></b></p>
 <a id="ComicManager-top" type="hidden" href="?ComicManager"><button>漫畫管理</button></a> 
 <a href="javascript:window.location.reload();"><button>刷新頁面</button></a>
