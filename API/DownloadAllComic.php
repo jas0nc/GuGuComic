@@ -35,6 +35,8 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 				 echo 'http://web4.cartoonmad.com/home'.sprintf('%05d', $i).' is correct;!!!!!!!!!<br>';
 				 $jpglinktoday = 'http://web4.cartoonmad.com/home'.sprintf('%05d', $i);
 				 $secretkeyfile = __DIR__.'/secretkey.txt';
+				 $secretkeyfilebackup = __DIR__.'/secretkeybackup'.'/secretkey.'.date("Y-m-d").'.txt';
+				 file_put_contents($secretkeyfilebackup, file_get_contents($secretkeyfile));
 				 file_put_contents($secretkeyfile, $jpglinktoday);
 				 break;
 			 }
