@@ -252,7 +252,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			} 
          }
      }
-	rmdir(__DIR__.'/../temp/'.$comic);
+	if (file_exists(__DIR__.'/../temp/'.$comic)) {rmdir(__DIR__.'/../temp/'.$comic);}
     echo 'Finish check :'.$comic.'
 ';
 }
