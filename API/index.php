@@ -29,7 +29,7 @@ else {
 
 <html>
 <head>
-<title>動漫J神<?if(isset($_GET['Comic'])){echo ' - '.$comic;}if(isset($_GET['Chapter'])){echo ' - '.$Chap;}?></title>
+<title>動漫J神<?if(isset($_GET['Comic'])){echo ' - '.$comic;}if(isset($_GET['Chapter'])){echo ' - '.$Chap;}if(isset($_GET['Chaptername'])){echo ' - '.$Chaptername;}?></title>
 <style>
 * {
   padding: 0;

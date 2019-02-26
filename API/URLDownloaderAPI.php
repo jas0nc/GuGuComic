@@ -6,8 +6,9 @@ foreach ($urls as $url){
 	if (empty($url)){continue;}
 	else{
 	//get $ComicSN
-	$comicSN = end(explode('comic/',$url));
+	$comicSN = end(explode('/',$url));
 	$comicSN = array_values(explode('.',$comicSN))[0];
+	if (empty($comicSN)){continue;}
 	//$result .=  $url.'<br>'; 
 	//$result .= $comicSN.'<br>'; 
 	$html = urldecode(file_get_contents($url));
@@ -19,7 +20,7 @@ foreach ($urls as $url){
 	//$result .= $comicname.'<br>';
 	include('UpdateScript.php');
 	$result .= $comicname.'['.$comicSN.']'.
-	' - 已新增 - '.
+	' - 已新增到資料庫 - '.
 	updatescript($comicname, $comicSN, $ComicLinkArr,$LastChatperArr).
 	'<br>';
 	}
@@ -27,6 +28,6 @@ foreach ($urls as $url){
 //------------------------------------------//
 //Close Tab
 echo $result;
-//echo '<SCRIPT>setTimeout("self.close()", 15000 ) // after 5 seconds</SCRIPT>';
+echo '<SCRIPT>setTimeout("self.close()", 15000 ) // after 5 seconds</SCRIPT>';
 exit;
 ?>

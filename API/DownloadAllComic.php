@@ -105,16 +105,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 	$lastchap = current($newcahptersname);
 	//echo $lastchap;exit;
 	//update last chap array
-	if ($lastchap === $LastChatperArr[$comic]){
-	//$result
-		$debug .= $comic.'['.$comicSN.'] - 沒有更新<br>';
-		//echo $comicname.'['.$comicSN.'] - 沒有更新<br>';exit;
-	}
-	else if($lastchap === null){
-	//$result
-		$debug .= $comic.'['.$comicSN.'] - NULL<br>';
-	}
-	else {
+	if ($lastchap != $LastChatperArr[$comic]){
 		//$prefetchcomic = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'?Comic='.$comicname); //try do prefetch
 		//$ComicLinkArr
 		$resortarray = $ComicLinkArr[$comic];
@@ -128,7 +119,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr),LOCK_EX);
 		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.txt',serialize($LastChatperArr),LOCK_EX);
 		//$result
-		$result .= $comic.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d").']<br>';
+		$result .= $comic.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d H:m").']<br>';
 		//$result .= print_r($LastChatperArr).'<br>';
 		$oldlog = file_get_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt');		
 		$newlog = $result;
