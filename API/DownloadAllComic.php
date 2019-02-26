@@ -220,6 +220,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 							unlink($filename);
 						}
 					}
+				rmdir(__DIR__.'/../temp/'.$comic);
 				} 
 			} 
          }
