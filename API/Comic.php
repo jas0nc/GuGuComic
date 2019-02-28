@@ -58,7 +58,7 @@ foreach(array_reverse(array_keys($keys)) as $k){
 					col=document.getElementById("h'.$k.'");
 					col.style.color="#FF0000";
 				}';
-	if (!file_exists($CBZpath)){ echo '
+	if (!file_exists($CBZpath)){ /*echo '
 			if (x == 1){
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
@@ -71,7 +71,7 @@ foreach(array_reverse(array_keys($keys)) as $k){
 				xhttp.send();
 				col=document.getElementById("h'.$k.'");
 				col.style.color="#FFA500";
-			}';
+			}';*/
 			$nomissingchapter = false;}
 	echo '
 		}, t*500);';

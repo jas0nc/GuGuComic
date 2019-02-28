@@ -52,8 +52,6 @@ unlink($downloadallcomictest);
 //$ComicLinkArr = array();
 $ComicLinkArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json'), true);
 $LastChatperArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/LastChatper.json'), true);
-//$ComicLinkArr = unserialize(file_get_contents(__DIR__.'/../config/ComicData/ComicLinkArr.txt'), true);
-//$LastChatperArr = unserialize(file_get_contents(__DIR__.'/../config/ComicData/LastChatper.txt'), true);
 
 //$ComicLinkArr  = array('銃夢' => 1558);
 
@@ -111,14 +109,12 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		$resortarray = $ComicLinkArr[$comic];
 		unset($ComicLinkArr[$comic]);
 		$ComicLinkArr[$comic] = $resortarray;
-		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr),LOCK_EX);
-		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.txt',serialize($ComicLinkArr),LOCK_EX);
+		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr, JSON_UNESCAPED_UNICODE),LOCK_EX);
 		//$LastChatperArr
 		unset($LastChatperArr[$comic]);
 		$LastChatperArr = array_merge($LastChatperArr, array($comic => $lastchap));
-		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr),LOCK_EX);
-		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.txt',serialize($LastChatperArr),LOCK_EX);
-		//$result
+		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr, JSON_UNESCAPED_UNICODE),LOCK_EX);
+		//$result;
 		$result .= $comic.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d H:m").']<br>';
 		//$result .= print_r($LastChatperArr).'<br>';
 		$oldlog = file_get_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt');		

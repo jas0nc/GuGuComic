@@ -121,7 +121,7 @@ unlink(__DIR__.'/../temp/testingpage.jpg');
 <a href="?BackupDB"><button>建立存檔</button></a> 
 <a id="Downloader-top" type="hidden" href="?Downloader"><button>下載漫畫</button></a>
 <br>
-<a href="?ClearSession"><button>檢查更新</button></a> 
+<!--<a href="?ClearSession"><button>檢查更新</button></a> 
 <?
 if ($hotlink == "False"){
 	echo '<a href="?hotlink=True"><button><s>HotLink</s></button></a>';
@@ -129,7 +129,7 @@ if ($hotlink == "False"){
 else{
 	echo '<a href="?hotlink=False"><button>Hotlink</button></a>';
 }
-?>
+?>-->
 <div id="BackupNametop-div" style="display:none">
 <form action="API/BackupDBAPI.php" method="post" align="center">
 <p id="BackupNametop">未有存檔</p>
