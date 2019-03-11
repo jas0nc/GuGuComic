@@ -48,6 +48,8 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 		 }
 	}
 }
+else {echo 'Secretkey: '.$jpglinktoday.' is checked and correct.
+';}
 unlink($downloadallcomictest);
 //$ComicLinkArr = array();
 $ComicLinkArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json'), true);
