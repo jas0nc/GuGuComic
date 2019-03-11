@@ -1,4 +1,10 @@
 <?
+if(array_values(explode("/",$_SERVER['REQUEST_URI']))[1] != "API"){
+	$homepage = 'http://'.$_SERVER['HTTP_HOST']."/".array_values(explode("/",$_SERVER['REQUEST_URI']))[1];
+}
+else{
+	$homepage = 'http://'.$_SERVER['HTTP_HOST'];
+}
 //---------------------------//
 if(isset($_POST['Backup'])){
 //---------------------------//
@@ -21,7 +27,7 @@ if(isset($_POST['Backup'])){
 		//print_r($Backup);
 		file_put_contents('../config/ProgressBackup/'.$user.'.json',json_encode($Backup));
 		echo "<SCRIPT>window.localStorage.setItem('動漫J神-BackupName', '".$user."');</SCRIPT>";
-		echo '<meta http-equiv="refresh" content="1;url=http://'.$_SERVER['HTTP_HOST'].'" />';
+		echo '<meta http-equiv="refresh" content="1;url='.$homepage.'" />';
 		}
 }
 //---------------------------//
@@ -46,7 +52,7 @@ else if(isset($_POST['NewBackup'])){
 		//print_r($Backup);
 		file_put_contents('../config/ProgressBackup/'.$user.'.json',json_encode($Backup));
 		echo "<SCRIPT>window.localStorage.setItem('動漫J神-BackupName', '".$user."');</SCRIPT>";
-		echo '<meta http-equiv="refresh" content="1;url=http://'.$_SERVER['HTTP_HOST'].'" />';
+		echo '<meta http-equiv="refresh" content="1;url='.$homepage.'" />';
 		}
 }
 //---------------------------//
@@ -61,7 +67,7 @@ else if(isset($_POST['Restore'])){
 	echo "</script>";
 //---------------------------//
 	//print_r($RestoreProgress);
-	echo '<meta http-equiv="refresh" content="1;url=http://'.$_SERVER['HTTP_HOST'].'" />';
+	echo '<meta http-equiv="refresh" content="1;url='.$homepage.'" />';
 }
 //---------------------------//
 else if(isset($_POST['OtherRestore'])){
@@ -75,7 +81,7 @@ else if(isset($_POST['OtherRestore'])){
 	echo "</script>";
 //---------------------------//
 	//print_r($RestoreProgress);
-	echo '<meta http-equiv="refresh" content="1;url=http://'.$_SERVER['HTTP_HOST'].'" />';
+	echo '<meta http-equiv="refresh" content="1;url='.$homepage.'" />';
 }
 else {echo 'Invalid Input';}
 ?>
