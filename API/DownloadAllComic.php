@@ -105,7 +105,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 	$lastchap = current($newcahptersname);
 	//echo $lastchap;exit;
 	//update last chap array
-	if ($lastchap != $LastChatperArr[$comic]){
+	if ($lastchap != $LastChatperArr[$comic] && $lastchap != null){
 		//$prefetchcomic = file_get_contents('http://'.$_SERVER['HTTP_HOST'].'?Comic='.$comicname); //try do prefetch
 		//$ComicLinkArr
 		$resortarray = $ComicLinkArr[$comic];
