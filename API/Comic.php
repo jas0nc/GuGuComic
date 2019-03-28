@@ -38,22 +38,33 @@ foreach ($chapterlist as $chapter){
 	$chaps[] = 'http://www.cartoonmad.com'.$schapterlink;
 }
 echo '<script>var x = 1; t = 1;</script>';
-$keys = array_keys($chaps);
+//----------------//
+$CBZlist = glob(__DIR__.'/../CBZ/'.$comic.'/*.cbz');
+foreach($CBZlist as $CBZfile){
+	$CBZChap = str_replace(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - ','',$CBZfile);
+	$CBZChap = str_replace('.cbz','',$CBZChap);
+	$newCBZlist[] = $CBZChap;
+}
+$combinechaps = array_unique(array_merge($newcahptersname,$newCBZlist), SORT_REGULAR);
+asort($combinechaps);
+//print_r($combinechaps);exit;
+//----------------//
+$keys = array_keys($combinechaps);
 $nomissingchapter = true;
 foreach(array_reverse(array_keys($keys)) as $k){
 	$i ++;
-	$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz';
+	$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$k]].'.cbz';
 	echo '<td width="20%">';
 	echo '&nbsp;<a id="h'.$k.'" href="?Comic='.$comic.'&Chapter='.$keys[$k];
-	if (file_exists($CBZpath)){ echo '&Chaptername='.$newcahptersname[$keys[$k]];}
-	echo '">'.$newcahptersname[$keys[$k]].'</a>';
+	if (file_exists($CBZpath)){ echo '&Chaptername='.$combinechaps[$keys[$k]];}
+	echo '">'.$combinechaps[$keys[$k]].'</a>';
 	if (file_exists($CBZpath)){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '&nbsp;<br>';
 	echo '</p></td>';
 	echo '
 		<script>
 		setTimeout(function(t) {
-			if (window.localStorage.getItem("'.$comic.'") == "'.$newcahptersname[$keys[$k]].'"){
+			if (window.localStorage.getItem("'.$comic.'") == "'.$combinechaps[$keys[$k]].'"){
 					x = 0;
 					col=document.getElementById("h'.$k.'");
 					col.style.color="#FF0000";
