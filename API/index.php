@@ -104,7 +104,7 @@ addToHomescreen();
 <p><i>A mirror site for Cartoonmad.com</i></p>
 <p><b><?
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r');
+$downloadpage = fopen($jpglinktoday.'/3583/157/002.jpg', 'r');
 //--------------------------------------------//
 file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
 if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){
