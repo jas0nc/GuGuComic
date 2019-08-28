@@ -1,6 +1,6 @@
 <?php
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r');
+$downloadpage = fopen($jpglinktoday.'/3583/157/002.jpg', 'r');
 $downloadallcomictest = __DIR__.'/../temp/downloadallcomictest.jpg';
 file_put_contents($downloadallcomictest, $downloadpage);
 if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(__DIR__.'/../temp/404.jpg')){
