@@ -1,6 +1,6 @@
 <?php
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r'); 
+$downloadpage = fopen($jpglinktoday.'/1698/298/002.jpg', 'r');
 $downloadallcomictest = __DIR__.'/../temp/downloadallcomictest.jpg';
 file_put_contents($downloadallcomictest, $downloadpage);
 if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(__DIR__.'/../temp/404.jpg')){
@@ -10,9 +10,9 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 	//find new secretkey
 	//$jpglinktoday = 'https://www.cartoonmad.com/home75372';
 	//创建可抛出一个异常的函数
-	function testsecretkey($key) 
+	function testsecretkey($key)
 	 {
-	 	$downloadpage_img = fopen('http://web4.cartoonmad.com/home'.sprintf('%05d', $key).'/1698/298/002.jpg', 'r');
+	 	$downloadpage_img = fopen('http://web4.cartoonmad.com/home'.sprintf('%05d', $key).'/3583/157/002.jpg', 'r');
 	 	$filename = __DIR__.'/../temp/testingpage'.sprintf('%05d', $key).'.jpg';
 	 	file_put_contents($filename, $downloadpage_img);
 		//if (!is_file($filename) || filesize($filename) < 20000)
@@ -25,7 +25,7 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 	 unlink($filename);
 	 return true;
 	 }
-	
+
 	//在 "try" 代码块中触发异常
 	for ($i = 80000; $i >= 50000; $i--){
 		try
@@ -119,7 +119,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		//$result;
 		$result .= $comic.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d H:m").']<br>';
 		//$result .= print_r($LastChatperArr).'<br>';
-		$oldlog = file_get_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt');		
+		$oldlog = file_get_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt');
 		$newlog = $result;
 		file_put_contents(__DIR__ .'/../config/ComicData/UpdateLog.txt',$newlog.$oldlog,LOCK_EX);
 	}
@@ -189,7 +189,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 				else {
 					//test if secretkey is usable
 					$start_memory_img = memory_get_usage();
-					$downloadpage_img = fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r'); 
+					$downloadpage_img = fopen($jpglink.sprintf('%03d', $i).'.jpg', 'r');
 					$downloadpagesize_img = memory_get_usage() - $start_memory_img;
 					file_put_contents($filename, $downloadpage_img);
 					if (is_file($filename) && filesize($filename) > 20000)
@@ -215,7 +215,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 						$pageiscomplete = false;
 						break;
 					}
-				}		
+				}
 			}
 			//create CBZ
 			if(!$pageiscomplete) {
@@ -246,8 +246,8 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 							unlink($filename);
 						}
 					}
-				} 
-			} 
+				}
+			}
          }
      }
 	if (file_exists(__DIR__.'/../temp/'.$comic)) {rmdir(__DIR__.'/../temp/'.$comic);}
