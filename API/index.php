@@ -103,8 +103,9 @@ addToHomescreen();
 <h1>動漫J神</h1>
 <p><i>A mirror site for Cartoonmad.com</i></p>
 <p><b><?
+$testpage = "/2504/324/002.jpg"; //七原罪漫畫 - 324 話　- 002.jpg
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.'/3583/157/002.jpg', 'r');
+$downloadpage = fopen($jpglinktoday.$testpage, 'r');
 //--------------------------------------------//
 file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
 if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){

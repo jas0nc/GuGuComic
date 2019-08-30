@@ -1,6 +1,7 @@
 <?php
+$testpage = "/2504/324/002.jpg"; //七原罪漫畫 - 324 話　- 002.jpg
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.'/3583/157/002.jpg', 'r');
+$downloadpage = fopen($jpglinktoday.$testpage, 'r');
 $downloadallcomictest = __DIR__.'/../temp/downloadallcomictest.jpg';
 file_put_contents($downloadallcomictest, $downloadpage);
 if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(__DIR__.'/../temp/404.jpg')){
@@ -12,7 +13,7 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 	//创建可抛出一个异常的函数
 	function testsecretkey($key)
 	 {
-	 	$downloadpage_img = fopen('http://web4.cartoonmad.com/home'.sprintf('%05d', $key).'/3583/157/002.jpg', 'r');
+	 	$downloadpage_img = fopen('http://web4.cartoonmad.com/'.sprintf('%05d', $key).$testpage, 'r');
 	 	$filename = __DIR__.'/../temp/testingpage'.sprintf('%05d', $key).'.jpg';
 	 	file_put_contents($filename, $downloadpage_img);
 		//if (!is_file($filename) || filesize($filename) < 20000)
