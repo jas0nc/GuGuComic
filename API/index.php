@@ -107,14 +107,14 @@ $testpage = "/2504/324/002.jpg"; //七原罪漫畫 - 324 話　- 002.jpg
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
 $downloadpage = fopen($jpglinktoday.$testpage, 'r');
 //--------------------------------------------//
-file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
+/*file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
 if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){
 	echo 'jpglinktoday: {'.$jpglinktoday.'} is not correct.<br>Please update it in config.php.';
 	echo 'downloaded testpage size '.round(filesize(__DIR__.'/../temp/testingpage.jpg')/1024,0).'KB is less than 20KB<br>';
 	echo 'non-cached comic may not be shown properly.';
 	//exit;
 }
-unlink(__DIR__.'/../temp/testingpage.jpg');
+unlink(__DIR__.'/../temp/testingpage.jpg');*/
 ?></b></p>
 <a id="ComicManager-top" type="hidden" href="?ComicManager"><button>漫畫管理</button></a> 
 <a href="javascript:window.location.reload();"><button>刷新頁面</button></a>
