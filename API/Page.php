@@ -1,19 +1,15 @@
 <?
 if (isset($ComicLinkArr[$comic])){$comicSN=$ComicLinkArr[$comic];}
 if (isset($CompletedComicLinkArr[$comic])){$comicSN=$CompletedComicLinkArr[$comic];}
-//-----------------------------//
-if(isset($Chaptername))
-{
-	echo "try list CBZ";
+//-----------------------------//Comic.php
+if($changehotlink == "False"){
 	$CBZlist = glob(__DIR__.'/../CBZ/'.$comic.'/*.cbz');
 	foreach($CBZlist as $CBZfile){
 		$CBZChap = str_replace(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - ','',$CBZfile);
 		$CBZChap = str_replace('.cbz','',$CBZChap);
 		$newCBZlist[] = $CBZChap;
-	}
-	asort($newCBZlist);
-	$chaps = $newcahptersname = $newCBZlist;
-	$keys = array_keys($newcahptersname);
+		}
+		$combinechaps = $newchapters = $newCBZlist;
 }
 else {
 	//Get Comichome page sourcecode
@@ -34,7 +30,7 @@ else {
 		$schapterpath = '/var/services/web/cartoonmad/Comic/'.$comicname. '/'.$schaptername;
 		//-----------------------------//
 		//Add URL to download quere if chapter not exist
-		$newcahptersname[] = $schaptername;
+		$newchaptersname[] = $schaptername;
 		$newcahpters = 'http://www.cartoonmad.com'.$schapterlink;
 		$chaps[] = 'http://www.cartoonmad.com'.$schapterlink;
 	}
@@ -77,29 +73,33 @@ else {
 	
 		//---------------------------------------------------------------------------------------//
 		//$chaps = get_dirs('./Comic/'.$comic.'/');
-		$keys = array_keys($chaps);
+		$combinechaps = $newchaptersname;
 	}
 }
+
+	//asort($combinechaps);
+	$keys = array_keys($combinechaps);
+	//print_r($combinechaps);
 	//$pages = glob('./Comic/'.$comic.'/'.$chaps[$keys[$chap]].'/'.'*.jpg');
 	//write history to HTML DOM
 	echo "<script>
-	window.localStorage.setItem('".$comic."', '".$newcahptersname[$keys[$chap]]."');
+	window.localStorage.setItem('".$comic."', '".$combinechaps[$keys[$chap]]."');
 	</script>";
 	//chapter navigator Start
 	echo ' / <a href="?Comic='.$comic.'">'.'<button>返回: '.$comic.'</button></a><br>';
 	echo '<table width="100%"><tr>';
 	echo '<td align="left">';
 	if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1];
-	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap-1]];}
-	echo '">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
-	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$combinechaps[$keys[$chap-1]];}
+	echo '">上一話: '.$combinechaps[$keys[$chap-1]].'</a>';}
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap-1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '</td><td align="center">';
-	echo $newcahptersname[$keys[$chap]];
+	echo $combinechaps[$keys[$chap]];
 	echo '</td><td align="right">';
 	if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload1" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1];
-	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap+1]];}
-	echo '">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
-	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$combinechaps[$keys[$chap+1]];}
+	echo '">下一話: '.$combinechaps[$keys[$chap+1]].'</a>';}
+	if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap+1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '</td>';
 	echo '</tr></table>';
 	//chapter navigator end	
@@ -136,9 +136,9 @@ else {
 				if (!file_exists($structure)) {
 				    mkdir($structure, 0777, true);
 				}
-				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+				$filename = $structure.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
 				if (is_file($filename) && filesize($filename) > 20000){
-					echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+					echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
 					}
 				else {
 					//test if secretkey is usable
@@ -148,12 +148,12 @@ else {
 				    file_put_contents($filename, $downloadpage_img);
 					if (is_file($filename) && filesize($filename) > 20000)
 					{
-						echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
+						echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
 					}
 					else {
-						echo 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
+						echo 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
 						$pageiscomplete = false;
-						$pagemissing .= 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
+						$pagemissing .= 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
 					}
 				}		
 			}
@@ -169,18 +169,18 @@ else {
 			if (!file_exists(__DIR__.'/../CBZ/'.$comic)) {
 			    mkdir(__DIR__.'/../CBZ/'.$comic, 0777, true);
 			}
-			$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap]].'.cbz';
+			$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap]].'.cbz';
 			if (!file_exists($CBZpath)) {
 				$zip = new ZipArchive;
 				$zip->open($CBZpath, ZipArchive::CREATE);
 				for ($i = 1; $i <= $pages; $i++) {
-					$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
-					$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
+					$filename = $structure.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+					$zip->addFile($filename,$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg');
 				}
 			$zip->close();
 			echo "CBZ file has been saved.";
 			for ($i = 1; $i <= $pages; $i++) {
-				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+				$filename = $structure.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
 				if (file_exists($filename)){
 						unlink($filename);
 					}
@@ -189,7 +189,7 @@ else {
 			//$zip->open($CBZpath, ZipArchive::OVERWRITE);
 			echo "CBZ file already exist";	
 			for ($i = 1; $i <= $pages; $i++) {
-				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
+				$filename = $structure.$comic.'-'.$combinechaps[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg';
 				if (file_exists($filename)){
 						unlink($filename);
 					}
@@ -200,7 +200,7 @@ else {
 			Please download it manually from :'.$url.'<br>
 			The page mssing are:<br>'.$pagemissing;
 		}
-		if (!file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ 
+		if (!file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap+1]].'.cbz')){ 
 			echo '
 			<script>
 			var xhttp = new XMLHttpRequest();
@@ -222,16 +222,16 @@ else {
 echo '<table width="100%"><tr>';
 echo '<td align="left">';
 if (isset($chaps[$keys[$chap-1]])){echo '<a href="?Comic='.$comic.'&Chapter='.$keys[$chap-1];
-if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap-1]];}
-echo '">上一話: '.$newcahptersname[$keys[$chap-1]].'</a>';}
-if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap-1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
+if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap-1]].'.cbz')){ echo '&Chaptername='.$combinechaps[$keys[$chap-1]];}
+echo '">上一話: '.$combinechaps[$keys[$chap-1]].'</a>';}
+if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap-1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 echo '</td><td align="center">';
-echo $newcahptersname[$keys[$chap]];
+echo $combinechaps[$keys[$chap]];
 echo '</td><td align="right">';
 if (isset($chaps[$keys[$chap+1]])){echo '<a id="preload2" href="?Comic='.$comic.'&Chapter='.$keys[$chap+1];
-if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$newcahptersname[$keys[$chap+1]];}
-echo '">下一話: '.$newcahptersname[$keys[$chap+1]].'</a>';}
-if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$chap+1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
+if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap+1]].'.cbz')){ echo '&Chaptername='.$combinechaps[$keys[$chap+1]];}
+echo '">下一話: '.$combinechaps[$keys[$chap+1]].'</a>';}
+if (file_exists(__DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$chap+1]].'.cbz')){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 echo '</td>';
 echo '</tr></table>';
 echo '<a href="?Comic='.$comic.'">'.'<button>返回: '.$comic.'</button></a> / ';
