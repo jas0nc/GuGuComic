@@ -182,7 +182,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 					echo '   '.'   '.'created folder:'.$structure.'
 ';
 				}
-				$filename = $structure.$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
+				$filename = $structure.str_replace(' ','',$comic).'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
 				if (is_file($filename) && filesize($filename) > 20000){
 					echo '   '.'   '.'image exist: '.end(explode('/',$filename)).', skip;
 ';
