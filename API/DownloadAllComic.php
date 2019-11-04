@@ -152,13 +152,22 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			//Get link and pages
 			$html = $html[2];//echo $html;
 			//Get image link
-			$jpg = explode('<img src="',$html);
-			$jpg = $jpg[2];
+			$jpg = explode('<img src="comicpic.asp?file=',$html);
+			$jpg = $jpg[1];
 			$jpg = explode('" border="',$jpg);
 			$jpg = $jpg[0];
-			$jpg = explode('/',$jpg);
-			$jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg[2].'/';
-			//echo $jpglink;exit;
+			$jpg = str_replace('001','',$jpg);
+			//echo '   '.'   '.'jpg:'.$jpg.'';
+			//$jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
+			$jpglink = $jpglinktoday.$jpg;
+			//echo '   '.'   '.'jpglink: '.$jpglink.'';
+			//https://www.cartoonmad.com/75527/1152/961/002.jpg
+			//https://www.cartoonmad.com/75527/2504/330/001.jpg
+
+			//echo $jpg;
+			//$jpglink = preg_replace('/\d+.jpg/', '', $jpg);
+			//echo '   '.'   '.'jpglink: '.$jpglink.'';
+			//exit;
 			//$ComicSN = $jpg[4];
 			//Get Total Page Number
 			//$pages = explode('下一頁',$html);
@@ -204,6 +213,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 					}
 					else if (file_get_contents($filename) == file_get_contents(__DIR__.'/../temp/404.jpg')){
 						echo '   '.'   '.'download fail: '.end(explode('/',$filename)).', (404 error), break;
+   '.'   '.'Please check if this image link is correct: '.$jpglink.sprintf('%03d', $i).'.jpg
 ';
 						//echo 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
 						$pageiscomplete = false;
@@ -211,6 +221,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 					}
 					else {
 						echo '   '.'   '.'download fail: '.end(explode('/',$filename)).', file size ('.round(filesize($filename)/1024).'KB)too small, break;
+   '.'   '.'Please check if this image link is correct: '.$jpglink.sprintf('%03d', $i).'.jpg
 ';
 						//echo 'download failed: <a href="'.$jpglink.sprintf('%03d', $i).'.jpg" target="_blank">'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg</a>. ('.round(filesize($filename)/1024,0).'KB)<br>';
 						$pageiscomplete = false;
