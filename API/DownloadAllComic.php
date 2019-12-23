@@ -241,7 +241,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 				//echo "This chapter is complete, generating a CBZ file for backup.<br>";
 				if (!file_exists(__DIR__.'/../CBZ/'.$comic)) {
 					mkdir(__DIR__.'/../CBZ/'.$comic, 0777, true);
-				}
+					}
 				if (!file_exists($CBZpath)) {
 					$zip = new ZipArchive;
 					$zip->open($CBZpath, ZipArchive::CREATE);
@@ -263,6 +263,14 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
          }
      }
 	if (file_exists(__DIR__.'/../temp/'.$comic)) {rmdir(__DIR__.'/../temp/'.$comic);}
+	if(!file_exists(__DIR__.'/../CBZ/'.$comic.'/cover.jpg')){
+		echo '   '.$comic.'/cover.jpg'.' is not exist, start download;
+';
+		$start_memory_img = memory_get_usage();
+		$downloadpage_img = fopen('https://www.cartoonmad.com/cartoonimg/coimg/'.$comicSN.'.jpg', 'r');
+		$downloadpagesize_img = memory_get_usage() - $start_memory_img;
+		file_put_contents(__DIR__.'/../CBZ/'.$comic.'/cover.jpg', $downloadpage_img);
+	}
     echo 'Finish check :'.$comic.'
 ';
 }

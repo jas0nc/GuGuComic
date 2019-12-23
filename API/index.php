@@ -13,18 +13,6 @@ include('config/config.php');
 $comic = $_GET['Comic'];
 $chap = $_GET['Chapter'];
 $Chaptername = $_GET['Chaptername'];
-if (isset($_GET['hotlink'])){
-$changehotlink = $_GET['hotlink'];
-	if ($changehotlink == "False"){$_SESSION['hotlink'] = "False";}
-	if ($changehotlink == "True"){$_SESSION['hotlink'] = "True";}
-	$hotlink = $changehotlink;
-}
-else if (isset($_SESSION['hotlink'])){
-	$hotlink = $_SESSION['hotlink'];
-}
-else {
-	$hotlink = "False";
-}
 ?>
 
 <html>
@@ -102,35 +90,11 @@ addToHomescreen();
 <div align="center">
 <h1>動漫J神</h1>
 <p><i>A mirror site for Cartoonmad.com</i></p>
-<p><b><?
-$testpage = "/2504/324/002.jpg"; //七原罪漫畫 - 324 話　- 002.jpg
-$jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.$testpage, 'r');
-//--------------------------------------------//
-/*file_put_contents(__DIR__.'/../temp/testingpage.jpg', $downloadpage);
-if (filesize(__DIR__.'/../temp/testingpage.jpg') < 20480){
-	echo 'jpglinktoday: {'.$jpglinktoday.'} is not correct.<br>Please update it in config.php.';
-	echo 'downloaded testpage size '.round(filesize(__DIR__.'/../temp/testingpage.jpg')/1024,0).'KB is less than 20KB<br>';
-	echo 'non-cached comic may not be shown properly.';
-	//exit;
-}
-unlink(__DIR__.'/../temp/testingpage.jpg');*/
-?></b></p>
 <a id="ComicManager-top" type="hidden" href="?ComicManager"><button>漫畫管理</button></a> 
 <a href="javascript:window.location.reload();"><button>刷新頁面</button></a>
 <a href="index.php"><button>返回首頁</button></a>
 <a href="?BackupDB"><button>建立存檔</button></a> 
 <a id="Downloader-top" type="hidden" href="?Downloader"><button>下載漫畫</button></a>
-<br>
-<!--<a href="?ClearSession"><button>檢查更新</button></a> 
-<?
-if ($hotlink == "False"){
-	echo '<a href="?hotlink=True"><button><s>HotLink</s></button></a>';
-}
-else{
-	echo '<a href="?hotlink=False"><button>Hotlink</button></a>';
-}
-?>-->
 <div id="BackupNametop-div" style="display:none">
 <form action="API/BackupDBAPI.php" method="post" align="center">
 <p id="BackupNametop">未有存檔</p>
@@ -156,7 +120,7 @@ $LastChatperArr = json_decode(file_get_contents('config/ComicData/LastChatper.js
 //include API Pages
 //------------------------------------------//
 //Chapter Page
-if (isset($chap)){include('API/Page.php');}
+if (isset($chap) || isset($Chaptername)){include('API/Page.php');}
 //------------------------------------------//
 //Chapter List
 else if (isset($comic)){include('API/Comic.php');}
@@ -198,14 +162,6 @@ include('API/Library.php');
   	<input type="submit" name="Backup" id="BackupNamebottom-save" value="SAVE">     
 	<input type="submit" name="Restore" id="BackupNamebottom-load" value="LOAD">
 </form>
-<?
-if ($hotlink == "False"){
-	echo '<a href="?hotlink=True"><button><s>HotLink</s></button></a>';
-}
-else{
-	echo '<a href="?hotlink=False"><button>Hotlink</button></a>';
-}
-?>
 </div>
 <p align="center">This website is for my personal PHP study only. &copy;Jason Chan.<br>Source code is available on <a href="https://github.com/jas0nc/GuGuComic">Github</a></p>
 </footer>
