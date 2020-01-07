@@ -154,9 +154,9 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			//Get image link
 			$jpg = explode('<img src="comicpic.asp?file=',$html);
 			$jpg = $jpg[1];
-			$jpg = explode('" border="',$jpg);
+			$jpg = explode(' border="',$jpg);
 			$jpg = $jpg[0];
-			$jpg = str_replace('001','',$jpg);
+			$jpg = str_replace('001"','',$jpg);
 			//echo '   '.'   '.'jpg:'.$jpg.'';
 			//$jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
 			$jpglink = $jpglinktoday.$jpg;
@@ -250,8 +250,10 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 						$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg');
 					}
 				$zip->close();
-				echo '   '.'CBZ Created: '.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz'.';
-';
+				if (file_exists($CBZpath)) {echo '   '.'CBZ Created: '.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz'.';
+';}
+				else  {echo '   '.'All image downloaded but CBZ creation failed at: '.$CBZpath.';
+';}
 				for ($i = 1; $i <= $pages; $i++) {
 					$filename = $structure.$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
 					if (file_exists($filename)){
