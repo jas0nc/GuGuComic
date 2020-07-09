@@ -1,7 +1,7 @@
 <?php
 $testpage = "/2504/324/002.jpg"; //七原罪漫畫 - 324 話　- 002.jpg
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
-$downloadpage = fopen($jpglinktoday.$testpage, 'r');
+/*$downloadpage = fopen($jpglinktoday.$testpage, 'r');
 $downloadallcomictest = __DIR__.'/../temp/downloadallcomictest.jpg';
 file_put_contents($downloadallcomictest, $downloadpage);
 if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(__DIR__.'/../temp/404.jpg')){
@@ -51,12 +51,12 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 }
 else {echo 'Secretkey: '.$jpglinktoday.' is checked and correct.
 ';}
-unlink($downloadallcomictest);
+unlink($downloadallcomictest);*/
 //$ComicLinkArr = array();
 $ComicLinkArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json'), true);
 $LastChatperArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/LastChatper.json'), true);
 
-//$ComicLinkArr  = array('銃夢' => 1558);
+//$ComicLinkArr  = array('超能力者齊木楠雄的災難' => 2022);
 
 $ComicLinkArrFile = __DIR__.'/../config/ComicData/ComicLinkArr.json';
 $LasChapterFile = __DIR__.'/../config/ComicData/LastChatper.json';
@@ -91,16 +91,21 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 	asort($chapterlist);
 	$newcahptersname = array();
 	$chaps = array();
+    $chappages = array();
 	foreach (array_reverse($chapterlist) as $chapter){
 		$schapter = array_values(explode('</a>',$chapter))[0];
 		$schapterlink = array_values(explode(' target=_blank>',$schapter))[0];
 		$schaptername = array_values(explode(' target=_blank>',$schapter))[1];
 		$schapterpath = '/var/services/web/cartoonmad/Comic/'.$comicname. '/'.$schaptername;
 		//-----------------------------//
+		$schapterpage = array_values(explode('</a>',$chapter))[1];
+		$schapterpage = array_values(explode('(',$schapterpage))[1];
+		$schapterpage = array_values(explode('頁',$schapterpage))[0];
 		//Add URL to download quere if chapter not exist
 		$newcahptersname[] = $schaptername;
 		$newcahpters = 'http://www.cartoonmad.com'.$schapterlink;
 		$chaps[] = 'http://www.cartoonmad.com'.$schapterlink;
+        $chappages[] = $schapterpage;
 		$lastchap = $schaptername;
 	}
 	$lastchap = current($newcahptersname);
@@ -136,47 +141,65 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		else {
 			echo '   '.end(explode('/',$CBZpath)).' is not exist, begin check;
 ';
-			$html = urldecode(file_get_contents($chaps[$k]));
+            $jpg = end(explode('/',$chaps[$k]));
+            $jpg = substr($jpg,5,3);
+            $jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
+            $pages = $chappages[$k];
+			/*$html = urldecode(file_get_contents($chaps[$k]));
 			$html = mb_convert_encoding($html,'utf-8','Big5');
-			if (empty($html)){echo 'blank html<br>';}
+			if (empty($html)){echo 'blank html<br>';exit;}
+			if (strpos($html,'第 1 頁') === false) {
+				echo '	Target page: '.$chaps[$k].' is blocked by an ads page,
+	try new stuff!
+';
+				file_put_contents(__DIR__.'/../CBZ/'.$comic.'/cover.jpg', $downloadpage_img);
+                $jpg = end(explode('/',$chaps[$k]));
+                $jpg = substr($jpg,5,3);
+                $jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
+                $pages = $chappages[$k];
+                //exit;
+				}
 			//Parsing SourceCode
-			$html = explode('第 1 頁',$html);
-			//Get Name & issue
-			$name = explode('<title>',$html[0]);
-			$name = array_values(explode('漫畫',$name[1]))[0];
-			$name = str_replace(' ', '', $name);
-			$issue = explode('<title>',$html[0]);
-			$issue = explode(' - 第 ',$issue[1]);
-			$issue = sprintf('%03d', array_values(explode(' 話 - ',$issue[1]))[0]);
-			//echo $newcahptersname[$keys[$k]];exit;
-			//Get link and pages
-			$html = $html[2];//echo $html;
-			//Get image link
-			$jpg = explode('<img src="comicpic.asp?file=',$html);
-			$jpg = $jpg[1];
-			$jpg = explode(' border="',$jpg);
-			$jpg = $jpg[0];
-			$jpg = str_replace('001"','',$jpg);
-			//echo '   '.'   '.'jpg:'.$jpg.'';
-			//$jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
-			$jpglink = $jpglinktoday.$jpg;
-			//echo '   '.'   '.'jpglink: '.$jpglink.'';
-			//https://www.cartoonmad.com/75527/1152/961/002.jpg
-			//https://www.cartoonmad.com/75527/2504/330/001.jpg
+			else {
+                $html = explode('第 1 頁',$html);
+                //Get Name & issue
+                $name = explode('<title>',$html[0]);
+                $name = array_values(explode('漫畫',$name[1]))[0];
+                $name = str_replace(' ', '', $name);
+                $issue = explode('<title>',$html[0]);
+                $issue = explode(' - 第 ',$issue[1]);
+                $issue = sprintf('%03d', array_values(explode(' 話 - ',$issue[1]))[0]);
+                //echo $newcahptersname[$keys[$k]];exit;
+                //Get link and pages
+                $html = $html[2];//echo $html;
+                //Get image link
+                $jpg = explode('<img src="comicpic.asp?file=',$html);
+                $jpg = $jpg[1];
+                $jpg = explode(' border="',$jpg);
+                $jpg = $jpg[0];
+                $jpg = str_replace('001"','',$jpg);
+                $jpg = str_replace('001&rimg=1"','',$jpg);
+                //echo '   '.'   '.'jpg:'.$jpg.'';
+                //$jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
+                $jpglink = $jpglinktoday.$jpg;
+                //echo '   '.'   '.'jpglink: '.$jpglink.'';
+                //https://www.cartoonmad.com/75527/1152/961/002.jpg
+                //https://www.cartoonmad.com/75527/2504/330/001.jpg
 
-			//echo $jpg;
-			//$jpglink = preg_replace('/\d+.jpg/', '', $jpg);
-			//echo '   '.'   '.'jpglink: '.$jpglink.'';
-			//exit;
-			//$ComicSN = $jpg[4];
-			//Get Total Page Number
-			//$pages = explode('下一頁',$html);
-			$pages = str_replace('下一卷','下一話',$html);
-			$pages = explode('下一話',$pages);//echo $html;
-			$pages = $pages[0];
-			$pages = explode('第',$pages);
-			$pages = explode(' 頁',end($pages));
-			$pages = $pages[0];
+                //echo $jpg;
+                //$jpglink = preg_replace('/\d+.jpg/', '', $jpg);
+                //echo '   '.'   '.'jpglink: '.$jpglink.'';
+                //exit;
+                //$ComicSN = $jpg[4];
+                //Get Total Page Number
+                //$pages = explode('下一頁',$html);
+                $pages = str_replace('下一卷','下一話',$html);
+                $pages = explode('下一話',$pages);//echo $html;
+                $pages = $pages[0];
+                $pages = explode('第',$pages);
+                $pages = explode(' 頁',end($pages));
+                $pages = $pages[0];
+            }*/
 			//---------------------------------------------------------------------------------------//
 			$keys = array_keys($chaps);
 			//Download and show images
@@ -265,7 +288,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
          }
      }
 	if (file_exists(__DIR__.'/../temp/'.$comic)) {rmdir(__DIR__.'/../temp/'.$comic);}
-	if(!file_exists(__DIR__.'/../CBZ/'.$comic.'/cover.jpg')){
+	if(!file_exists(__DIR__.'/../CBZ/'.$comic.'/cover.jpg') || filesize(__DIR__.'/../CBZ/'.$comic.'/cover.jpg') < 20000){
 		echo '   '.$comic.'/cover.jpg'.' is not exist, start download;
 ';
 		$start_memory_img = memory_get_usage();
