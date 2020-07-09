@@ -16,15 +16,27 @@ echo '<script>var x = 1; t = 1;</script>';
 //----------------//
 $keys = array_keys($combinechaps);
 $nomissingchapter = true;
+$singleormulti = '';
 echo '<table style="background-color:white"><tr>';
 foreach(array_reverse(array_keys($keys)) as $k){
 	$i ++;
+	if ($singleormulti != '話' && strpos($combinechaps[$keys[$k]],'話') !== false) {
+		echo '
+		</tr><td colspan="5" align="center">話</td><tr>';
+		$singleormulti = '話';
+		}
+	else if ($singleormulti != '卷' && strpos($combinechaps[$keys[$k]],'卷') !== false) {
+		echo '
+		</tr><td colspan="5" align="center">卷</td><tr>';
+		$singleormulti = '卷';
+		$i = 1;
+		}
 	$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$combinechaps[$keys[$k]].'.cbz';
 	echo '<td width="20%">';
 	echo '&nbsp;<a id="h'.$k.'" href="?Comic='.$comic.'&Chapter='.$keys[$k];
 	if (file_exists($CBZpath)){ echo '&Chaptername='.$combinechaps[$keys[$k]];}
 	echo '">'.$combinechaps[$keys[$k]].'</a>';
-	if (file_exists($CBZpath)){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
+	//if (file_exists($CBZpath)){ echo '<img height="15" id="CBZ_Ready" src="API/icon/CBZ.png">'; }
 	echo '&nbsp;<br>';
 	echo '</p></td>';
 	echo '
