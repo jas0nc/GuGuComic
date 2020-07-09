@@ -105,7 +105,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		$newcahptersname[] = $schaptername;
 		$newcahpters = 'http://www.cartoonmad.com'.$schapterlink;
 		$chaps[] = 'http://www.cartoonmad.com'.$schapterlink;
-        $chappages[] = $schapterpage;
+        $chappages[] = str_replace('&nbsp;','',$schapterpage);
 		$lastchap = $schaptername;
 	}
 	$lastchap = current($newcahptersname);
