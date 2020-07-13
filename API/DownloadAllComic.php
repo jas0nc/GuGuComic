@@ -2,11 +2,11 @@
 $testpage = "/2504/324/002.jpg"; //七原罪漫畫 - 324 話　- 002.jpg
 $jpglinktoday = file_get_contents(__DIR__.'/secretkey.txt');
 /*$downloadpage = fopen($jpglinktoday.$testpage, 'r');
-$downloadallcomictest = __DIR__.'/../temp/downloadallcomictest.jpg';
+$downloadallcomictest = str_replace('/API','',__DIR__).'/temp/downloadallcomictest.jpg';
 file_put_contents($downloadallcomictest, $downloadpage);
-if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(__DIR__.'/../temp/404.jpg')){
+if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcomictest) == file_get_contents(str_replace('/API','',__DIR__).'/temp/404.jpg')){
 	echo 'jpglinktoday: {'.$jpglinktoday.'} is not correct.<br>Please update it in config.php.';
-	//echo 'downloaded testpage size '.round(filesize(__DIR__.'/../temp/testingpage.jpg')/1024,0).'KB is less than 20KB<br>';
+	//echo 'downloaded testpage size '.round(filesize(str_replace('/API','',__DIR__).'/temp/testingpage.jpg')/1024,0).'KB is less than 20KB<br>';
 	//echo 'non-cached comic may not be shown properly.';
 	//find new secretkey
 	//$jpglinktoday = 'https://www.cartoonmad.com/home75372';
@@ -14,10 +14,10 @@ if (filesize($downloadallcomictest) < 20000 || file_get_contents($downloadallcom
 	function testsecretkey($key)
 	 {
 	 	$downloadpage_img = fopen('http://web4.cartoonmad.com/'.sprintf('%05d', $key).$testpage, 'r');
-	 	$filename = __DIR__.'/../temp/testingpage'.sprintf('%05d', $key).'.jpg';
+	 	$filename = str_replace('/API','',__DIR__).'/temp/testingpage'.sprintf('%05d', $key).'.jpg';
 	 	file_put_contents($filename, $downloadpage_img);
 		//if (!is_file($filename) || filesize($filename) < 20000)
-	  if (!is_file($filename) || filesize($filename) < 20000 || file_get_contents($filename) == file_get_contents(__DIR__.'/../temp/404.jpg'))
+	  if (!is_file($filename) || filesize($filename) < 20000 || file_get_contents($filename) == file_get_contents(str_replace('/API','',__DIR__).'/temp/404.jpg'))
 	  {
 	    $error = 'this secretkey '.$key.' is not correct;';
 	    unlink($filename);
@@ -53,15 +53,15 @@ else {echo 'Secretkey: '.$jpglinktoday.' is checked and correct.
 ';}
 unlink($downloadallcomictest);*/
 //$ComicLinkArr = array();
-$ComicLinkArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json'), true);
-$LastChatperArr = json_decode(file_get_contents(__DIR__.'/../config/ComicData/LastChatper.json'), true);
+$ComicLinkArr = json_decode(file_get_contents(str_replace('/API','',__DIR__).'/config/ComicData/ComicLinkArr.json'), true);
+$LastChatperArr = json_decode(file_get_contents(str_replace('/API','',__DIR__).'/config/ComicData/LastChatper.json'), true);
 
 //$ComicLinkArr  = array('超能力者齊木楠雄的災難' => 2022);
 
-$ComicLinkArrFile = __DIR__.'/../config/ComicData/ComicLinkArr.json';
-$LasChapterFile = __DIR__.'/../config/ComicData/LastChatper.json';
-$ComicLinkArrFileBackup = __DIR__.'/../config/ComicData/Backup/ComicLinkArr_'.date("Y-m-d H:i:s").'.json';
-$LasChapterFileBackup = __DIR__.'/../config/ComicData/Backup/LastChatper_'.date("Y-m-d H:i:s").'.json';
+$ComicLinkArrFile = str_replace('/API','',__DIR__).'/config/ComicData/ComicLinkArr.json';
+$LasChapterFile = str_replace('/API','',__DIR__).'/config/ComicData/LastChatper.json';
+$ComicLinkArrFileBackup = str_replace('/API','',__DIR__).'/config/ComicData/Backup/ComicLinkArr_'.date("Y-m-d H:i:s").'.json';
+$LasChapterFileBackup = str_replace('/API','',__DIR__).'/config/ComicData/Backup/LastChatper_'.date("Y-m-d H:i:s").'.json';
 if (!copy($ComicLinkArrFile, $ComicLinkArrFileBackup)) {
     echo "failed to backup ComicLinkArrFile.\n"; exit;
 }
@@ -71,7 +71,8 @@ if (!copy($LasChapterFile, $LasChapterFileBackup)) {
 
 $i = 0;
 
-foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
+foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){ // for normal download
+//foreach($ComicLinkArr as $comic => $comicSN){ //for reverse download
 	echo 'Start Checking :'.$comic.'
 ';
 	$i ++;
@@ -117,11 +118,11 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 		$resortarray = $ComicLinkArr[$comic];
 		unset($ComicLinkArr[$comic]);
 		$ComicLinkArr[$comic] = $resortarray;
-		file_put_contents(__DIR__.'/../config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr, JSON_UNESCAPED_UNICODE),LOCK_EX);
+		file_put_contents(str_replace('/API','',__DIR__).'/config/ComicData/ComicLinkArr.json',json_encode($ComicLinkArr, JSON_UNESCAPED_UNICODE),LOCK_EX);
 		//$LastChatperArr
 		unset($LastChatperArr[$comic]);
 		$LastChatperArr = array_merge($LastChatperArr, array($comic => $lastchap));
-		file_put_contents(__DIR__.'/../config/ComicData/LastChatper.json',json_encode($LastChatperArr, JSON_UNESCAPED_UNICODE),LOCK_EX);
+		file_put_contents(str_replace('/API','',__DIR__).'/config/ComicData/LastChatper.json',json_encode($LastChatperArr, JSON_UNESCAPED_UNICODE),LOCK_EX);
 		//$result;
 		$result .= $comic.'['.$comicSN.'] - 更新到 - '.$lastchap.' - ['.date("Y-m-d H:m").']<br>';
 		//$result .= print_r($LastChatperArr).'<br>';
@@ -132,7 +133,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 	//print_r($newcahptersname); print_r($chaps); continue;
 	$keys = array_keys($chaps);
 	foreach(array_keys($keys) as $k){
-		$CBZpath = __DIR__.'/../CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz';
+		$CBZpath = str_replace('/API','',__DIR__).'/CBZ/'.$comic.'/'.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz';
 		if(file_exists($CBZpath)){
 			echo '   '.end(explode('/',$CBZpath)).' is exist, skip;
 ';
@@ -152,7 +153,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 				echo '	Target page: '.$chaps[$k].' is blocked by an ads page,
 	try new stuff!
 ';
-				file_put_contents(__DIR__.'/../CBZ/'.$comic.'/cover.jpg', $downloadpage_img);
+				file_put_contents(str_replace('/API','',__DIR__).'/CBZ/'.$comic.'/cover.jpg', $downloadpage_img);
                 $jpg = end(explode('/',$chaps[$k]));
                 $jpg = substr($jpg,5,3);
                 $jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
@@ -208,7 +209,7 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			echo '   '.'   '.'total page: '.$pages.' pages
 ';
 			for ($i = 1; $i <= $pages; $i++) {
-				$structure = __DIR__.'/../temp/'.$comic.'/';
+				$structure = str_replace('/API','',__DIR__).'/temp/'.$comic.'/';
 				if (!file_exists($structure)) {
 					mkdir($structure, 0777, true);
 					echo '   '.'   '.'created folder:'.$structure.'
@@ -230,11 +231,11 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 						echo '   '.'   '.'downloading image: '.end(explode('/',$filename)).', next;
 ';							//echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
 					}
-					else if (is_file($filename) && file_get_contents($filename) != file_get_contents(__DIR__.'/../temp/404.jpg') && filesize($filename) > 1000){
+					else if (is_file($filename) && file_get_contents($filename) != file_get_contents(str_replace('/API','',__DIR__).'/temp/404.jpg') && filesize($filename) > 1000){
 						echo '   '.'   '.'downloading image: '.end(explode('/',$filename)).'(small but not 404), next;
 ';							//echo '<img id="the_pic" class="center fit" src="/temp/'.$comic.'/'.$comic.'-'.$newcahptersname[$keys[$chap]].'-'.sprintf('%03d', $i).'.jpg"><br>';
 					}
-					else if (file_get_contents($filename) == file_get_contents(__DIR__.'/../temp/404.jpg')){
+					else if (file_get_contents($filename) == file_get_contents(str_replace('/API','',__DIR__).'/temp/404.jpg')){
 						echo '   '.'   '.'download fail: '.end(explode('/',$filename)).', (404 error), break;
    '.'   '.'Please check if this image link is correct: '.$jpglink.sprintf('%03d', $i).'.jpg
 ';
@@ -262,23 +263,35 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			continue;
 			} else {
 				//echo "This chapter is complete, generating a CBZ file for backup.<br>";
-				if (!file_exists(__DIR__.'/../CBZ/'.$comic)) {
-					mkdir(__DIR__.'/../CBZ/'.$comic, 0777, true);
+				if (!file_exists(str_replace('/API','',__DIR__).'/CBZ/'.$comic)) {
+					mkdir(str_replace('/API','',__DIR__).'/CBZ/'.$comic, 0777, true);
 					}
 				if (!file_exists($CBZpath)) {
 					$zip = new ZipArchive;
-					$zip->open($CBZpath, ZipArchive::CREATE);
-					for ($i = 1; $i <= $pages; $i++) {
-						$filename = $structure.$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
-						$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg');
+					$opened = $zip->open( $CBZpath, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE );
+					if( $opened !== true ){
+						die("cannot open {$CBZpath} for writing.");
+					} else {
+						for ($i = 1; $i <= $pages; $i++) {
+							$filename = $structure.str_replace(' ','',$comic).'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
+							$filename = (string)$filename;
+							if(!file_exists($filename)) {echo '   '.'   '.'Error: '.$filename.' not found
+';}
+							/*echo '   '.'   '.'adding '.$filename.' to '.$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg'.'
+';*/
+							$zip->addFile($filename,$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg');
+						}
+						//$zip->addFromString($comic.'-'.$newcahptersname[$keys[$k]].'.txt','total pages is '.$pages);
 					}
-				$zip->close();
+					$zip->close();
+					echo '   '.'zip creation ok
+';
 				if (file_exists($CBZpath)) {echo '   '.'CBZ Created: '.$comic.' - '.$newcahptersname[$keys[$k]].'.cbz'.';
 ';}
 				else  {echo '   '.'All image downloaded but CBZ creation failed at: '.$CBZpath.';
 ';}
 				for ($i = 1; $i <= $pages; $i++) {
-					$filename = $structure.$comic.'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
+					$filename = $structure.str_replace(' ','',$comic).'-'.$newcahptersname[$keys[$k]].'-'.sprintf('%03d', $i).'.jpg';
 					if (file_exists($filename)){
 							unlink($filename);
 						}
@@ -287,14 +300,14 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){
 			}
          }
      }
-	if (file_exists(__DIR__.'/../temp/'.$comic)) {rmdir(__DIR__.'/../temp/'.$comic);}
-	if(!file_exists(__DIR__.'/../CBZ/'.$comic.'/cover.jpg') || filesize(__DIR__.'/../CBZ/'.$comic.'/cover.jpg') < 20000){
+	if (file_exists(str_replace('/API','',__DIR__).'/temp/'.$comic)) {rmdir(str_replace('/API','',__DIR__).'/temp/'.$comic);}
+	if(!file_exists(str_replace('/API','',__DIR__).'/CBZ/'.$comic.'/cover.jpg') || filesize(str_replace('/API','',__DIR__).'/CBZ/'.$comic.'/cover.jpg') < 20000){
 		echo '   '.$comic.'/cover.jpg'.' is not exist, start download;
 ';
 		$start_memory_img = memory_get_usage();
 		$downloadpage_img = fopen('https://www.cartoonmad.com/cartoonimg/coimg/'.$comicSN.'.jpg', 'r');
 		$downloadpagesize_img = memory_get_usage() - $start_memory_img;
-		file_put_contents(__DIR__.'/../CBZ/'.$comic.'/cover.jpg', $downloadpage_img);
+		file_put_contents(str_replace('/API','',__DIR__).'/CBZ/'.$comic.'/cover.jpg', $downloadpage_img);
 	}
     echo 'Finish check :'.$comic.'
 ';
