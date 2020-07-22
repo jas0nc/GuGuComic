@@ -126,6 +126,9 @@ if (isset($chap) || isset($Chaptername)){include('API/Page.php');}
 else if (isset($comic)){include('API/Comic.php');}
 //------------------------------------------//
 //URL=>Download
+else if (isset($_POST['Secretkey'])){include('API/UpdateSecretkey.php');}
+//------------------------------------------//
+//URL=>Download
 else if (isset($_POST['URLs'])){include('API/URLDownloaderAPI.php');}
 //------------------------------------------//
 //Downloader
