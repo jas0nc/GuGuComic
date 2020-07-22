@@ -2,11 +2,17 @@
 $result = '<h3>The Secretkey has been updated, this result page will be closed in 15 seconds.</h3><br>';
 //------------------------------------------//
 $jpglinktoday = $_POST['Secretkey'];
-//echo '"'.$jpglinktoday.'"<br>';
-file_put_contents(str_replace('/API','',__DIR__).'/API/secretkey.txt',$jpglinktoday,LOCK_EX);
-$result = 'Secretkey has been updated to '.file_get_contents(__DIR__.'/secretkey.txt');
-'<br>';
 
+//update secretkey to secretkey.txt
+file_put_contents(str_replace('/API','',__DIR__).'/API/secretkey.txt',$jpglinktoday,LOCK_EX);
+
+//show result in UI
+$result = 'Secretkey => '.file_get_contents(str_replace('/API','',__DIR__).'/API/secretkey.txt');
+
+//save this update to UpdateLog.txt
+$oldlog = file_get_contents(str_replace('/API','',__DIR__).'/config/ComicData/UpdateLog.txt');		
+$newlog = $result.' ['.date("Y-m-d").']<br>';
+file_put_contents(str_replace('/API','',__DIR__).'/config/ComicData/UpdateLog.txt',$newlog.$oldlog,LOCK_EX);
 
 //------------------------------------------//
 //Close Tab
