@@ -143,7 +143,12 @@ foreach(array_reverse($ComicLinkArr) as $comic => $comicSN){ // for normal downl
 			echo '   '.end(explode('/',$CBZpath)).' is not exist, begin check;
 ';
             $jpg = end(explode('/',$chaps[$k]));
-            $jpg = substr($jpg,5,3);
+            $jpg = str_replace($comicSN,"",$jpg);
+            //$jpg = str_replace(".html","",$jpg);
+            //$jpg = substr($jpg,0,-7);
+            $jpg = substr($jpg,0,4);
+            $jpg = sprintf("%03d",$jpg);
+            //echo "\n".$jpg."\n"; exit;
             $jpglink = $jpglinktoday.'/'.$comicSN.'/'.$jpg.'/';
             $pages = $chappages[$k];
 			/*$html = urldecode(file_get_contents($chaps[$k]));
