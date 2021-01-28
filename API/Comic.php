@@ -20,10 +20,15 @@ $singleormulti = '';
 echo '<table style="background-color:white"><tr>';
 foreach(array_reverse(array_keys($keys)) as $k){
 	$i ++;
-	if ($singleormulti != '話' && strpos($combinechaps[$keys[$k]],'話') !== false) {
+	if ($singleormulti != '話' && strlen($combinechaps[$keys[$k]]) <= 11 && strpos($combinechaps[$keys[$k]],'話') !== false) {
 		echo '
 		</tr><td colspan="5" align="center">話</td><tr>';
 		$singleormulti = '話';
+		}
+	else 	if ($singleormulti != '1000' && strlen($combinechaps[$keys[$k]]) > 11 && strpos($combinechaps[$keys[$k]],'話') !== false) {
+		echo '
+		</tr><td colspan="5" align="center">1000+話</td><tr>';
+		$singleormulti = '1000';
 		}
 	else if ($singleormulti != '卷' && strpos($combinechaps[$keys[$k]],'卷') !== false) {
 		echo '
